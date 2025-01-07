@@ -76,6 +76,9 @@ export default function MenuAppBar() {
                   <Button color="inherit" component={Link} to="/adminhome">
                     Home
                   </Button>
+                  <Button color="inherit" component={Link} to="/add">
+                    New Blog
+                  </Button>
                 </>
               ) : (
                 <>
