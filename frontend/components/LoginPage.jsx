@@ -5,7 +5,9 @@ import Tabs from "@mui/material/Tabs";
 import Tab from "@mui/material/Tab";
 import TextField from "@mui/material/TextField";
 import Button from "@mui/material/Button";
+import Typography from "@mui/material/Typography";
 import axios from "axios";
+import { useNavigate } from "react-router-dom";
 
 function CustomTabPanel(props) {
   const { children, value, index, ...other } = props;
@@ -32,6 +34,7 @@ CustomTabPanel.propTypes = {
 function LoginPage() {
   const [value, setValue] = React.useState(0); // State for Tabs
   const [formData, setFormData] = React.useState({ userId: "", password: "" });
+  const navigate = useNavigate();
 
   const handleChange = (event, newValue) => {
     setValue(newValue);
@@ -46,7 +49,7 @@ function LoginPage() {
     const email = formData.userId;
     const password = formData.password;
     const userData = { email: email, password: password, isadmin: value };
-    if (email != "" && password != "") {
+    if (email !== "" && password !== "") {
       axios
         .post("http://localhost:3000/user/login", userData, {
           withCredentials: true,
@@ -54,11 +57,11 @@ function LoginPage() {
         .then((response) => {
           // Save data locally only if the response is successful
           localStorage.setItem("user", JSON.stringify(response.data));
-          navigate("/"); // Redirect after successful login
+          navigate(`/${value ? "adminhome" : "userhome"}`);
         })
         .catch((error) => {
           // Do not save data or navigate on error
-          alert(`${error.response.data.message}`);
+          alert(`Error while Logging In.`);
         });
     } else {
       alert("All the fields are required !");
@@ -75,8 +78,13 @@ function LoginPage() {
         p: 2,
         borderRadius: 2,
         boxShadow: 3,
+        textAlign: "center", // Center-align the content
       }}
     >
+      {/* Login Title */}
+      <Typography variant="h5" gutterBottom>
+        LOGIN
+      </Typography>
       <Box sx={{ width: "100%", bgcolor: "background.paper" }}>
         <Tabs value={value} onChange={handleChange} centered>
           <Tab label="Customer" />

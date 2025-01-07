@@ -5,7 +5,9 @@ import Tabs from "@mui/material/Tabs";
 import Tab from "@mui/material/Tab";
 import TextField from "@mui/material/TextField";
 import Button from "@mui/material/Button";
+import Typography from "@mui/material/Typography";
 import axios from "axios";
+import { useNavigate } from "react-router-dom";
 
 function CustomTabPanel(props) {
   const { children, value, index, ...other } = props;
@@ -36,6 +38,7 @@ function RegisterPage() {
     email: "",
     password: "",
   });
+  const navigate = useNavigate();
 
   const handleChange = (event, newValue) => {
     setValue(newValue);
@@ -50,7 +53,7 @@ function RegisterPage() {
     const name = formData.name;
     const email = formData.email;
     const password = formData.password;
-    if (name != "" && email != "" && password != "") {
+    if (name !== "" && email !== "" && password !== "") {
       const userData = {
         name: name,
         email: email,
@@ -65,11 +68,11 @@ function RegisterPage() {
         .then((response) => {
           // Save data locally only if the response is successful
           localStorage.setItem("user", JSON.stringify(response.data));
-          navigate("/"); // Redirect after successful login
+          navigate(`/${value ? "adminhome" : "userhome"}`);
         })
         .catch((error) => {
           // Do not save data or navigate on error
-          alert(`${error.response.data.message}`);
+          alert(`Error while Registering`);
         });
     } else {
       alert("All the fields are required !");
@@ -77,106 +80,113 @@ function RegisterPage() {
   };
 
   return (
-    <Box
-      sx={{
-        width: "400px",
-        bgcolor: "background.paper",
-        mx: "auto",
-        mt: 5,
-        p: 2,
-        borderRadius: 2,
-        boxShadow: 3,
-      }}
-    >
-      <Box sx={{ width: "100%", bgcolor: "background.paper" }}>
-        <Tabs value={value} onChange={handleChange} centered>
-          <Tab label="Customer" />
-          <Tab label="Admin" />
-        </Tabs>
+    <>
+      <Box
+        sx={{
+          width: "400px",
+          bgcolor: "background.paper",
+          mx: "auto",
+          mt: 5,
+          p: 2,
+          borderRadius: 2,
+          boxShadow: 3,
+          textAlign: "center", // Center-align the text
+        }}
+      >
+        {/* Register Title */}
+        <Typography variant="h5" gutterBottom>
+          REGISTER
+        </Typography>
+        <Box sx={{ width: "100%", bgcolor: "background.paper" }}>
+          <Tabs value={value} onChange={handleChange} centered>
+            <Tab label="Customer" />
+            <Tab label="Admin" />
+          </Tabs>
+        </Box>
+        <CustomTabPanel value={value} index={0}>
+          {/* Customer Registration Form */}
+          <TextField
+            label="Name"
+            variant="outlined"
+            fullWidth
+            margin="normal"
+            name="name"
+            value={formData.name}
+            onChange={handleInputChange}
+          />
+          <TextField
+            label="Email"
+            type="email"
+            variant="outlined"
+            fullWidth
+            margin="normal"
+            name="email"
+            value={formData.email}
+            onChange={handleInputChange}
+          />
+          <TextField
+            label="Password"
+            type="password"
+            variant="outlined"
+            fullWidth
+            margin="normal"
+            name="password"
+            value={formData.password}
+            onChange={handleInputChange}
+          />
+          <Button
+            variant="contained"
+            color="primary"
+            fullWidth
+            onClick={handleSubmit}
+            sx={{ mt: 2 }}
+          >
+            Register
+          </Button>
+        </CustomTabPanel>
+        <CustomTabPanel value={value} index={1}>
+          {/* Admin Registration Form */}
+          <TextField
+            label="Name"
+            variant="outlined"
+            fullWidth
+            margin="normal"
+            name="name"
+            value={formData.name}
+            onChange={handleInputChange}
+          />
+          <TextField
+            label="Email"
+            type="email"
+            variant="outlined"
+            fullWidth
+            margin="normal"
+            name="email"
+            value={formData.email}
+            onChange={handleInputChange}
+          />
+          <TextField
+            label="Password"
+            type="password"
+            variant="outlined"
+            fullWidth
+            margin="normal"
+            name="password"
+            value={formData.password}
+            onChange={handleInputChange}
+          />
+          <Button
+            variant="contained"
+            color="primary"
+            fullWidth
+            onClick={handleSubmit}
+            sx={{ mt: 2 }}
+          >
+            Register
+          </Button>
+        </CustomTabPanel>
       </Box>
-      <CustomTabPanel value={value} index={0}>
-        {/* Customer Registration Form */}
-        <TextField
-          label="Name"
-          variant="outlined"
-          fullWidth
-          margin="normal"
-          name="name"
-          value={formData.name}
-          onChange={handleInputChange}
-        />
-        <TextField
-          label="Email"
-          type="email"
-          variant="outlined"
-          fullWidth
-          margin="normal"
-          name="email"
-          value={formData.email}
-          onChange={handleInputChange}
-        />
-        <TextField
-          label="Password"
-          type="password"
-          variant="outlined"
-          fullWidth
-          margin="normal"
-          name="password"
-          value={formData.password}
-          onChange={handleInputChange}
-        />
-        <Button
-          variant="contained"
-          color="primary"
-          fullWidth
-          onClick={handleSubmit}
-          sx={{ mt: 2 }}
-        >
-          Register
-        </Button>
-      </CustomTabPanel>
-      <CustomTabPanel value={value} index={1}>
-        {/* Admin Registration Form */}
-        <TextField
-          label="Name"
-          variant="outlined"
-          fullWidth
-          margin="normal"
-          name="name"
-          value={formData.name}
-          onChange={handleInputChange}
-        />
-        <TextField
-          label="Email"
-          type="email"
-          variant="outlined"
-          fullWidth
-          margin="normal"
-          name="email"
-          value={formData.email}
-          onChange={handleInputChange}
-        />
-        <TextField
-          label="Password"
-          type="password"
-          variant="outlined"
-          fullWidth
-          margin="normal"
-          name="password"
-          value={formData.password}
-          onChange={handleInputChange}
-        />
-        <Button
-          variant="contained"
-          color="primary"
-          fullWidth
-          onClick={handleSubmit}
-          sx={{ mt: 2 }}
-        >
-          Register
-        </Button>
-      </CustomTabPanel>
-    </Box>
+    </>
   );
 }
 
