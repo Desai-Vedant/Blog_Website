@@ -95,17 +95,25 @@ function AdminHome() {
           sx={{
             justifyContent: "center",
             alignItems: "stretch",
+            maxWidth: 1200, // Maximum width of the grid
+            margin: "0 auto", // Center the grid
           }}
         >
           {blogs.map((blog) => (
             <Grid2
               xs={12} // Full width on small screens
-              sm={6} // Half width on medium and large screens
+              sm={6} // Half width on medium screens
+              md={6} // Explicitly set to half width on large screens
               key={blog._id}
+              sx={{
+                display: 'flex',
+                justifyContent: 'center',
+              }}
             >
               <Card
                 sx={{
-                  height: "100%",
+                  width: 500, // Fixed width for all cards
+                  height: 350, // Fixed height for all cards
                   display: "flex",
                   flexDirection: "column",
                   justifyContent: "space-between",
@@ -116,11 +124,23 @@ function AdminHome() {
                   },
                 }}
               >
-                <CardContent>
+                <CardContent sx={{ 
+                  height: '100%', 
+                  display: 'flex', 
+                  flexDirection: 'column' 
+                }}>
                   <Typography
                     variant="h6"
                     gutterBottom
-                    sx={{ fontWeight: "bold", mb: 2 }}
+                    sx={{ 
+                      fontWeight: "bold", 
+                      mb: 2, 
+                      overflow: 'hidden', 
+                      textOverflow: 'ellipsis', 
+                      display: '-webkit-box', 
+                      WebkitLineClamp: 2, 
+                      WebkitBoxOrient: 'vertical' 
+                    }}
                   >
                     {blog.title}
                   </Typography>
@@ -133,10 +153,19 @@ function AdminHome() {
                   </Typography>
                   <Typography
                     variant="body1"
-                    sx={{ color: "text.primary", fontSize: "1rem" }}
+                    sx={{ 
+                      color: "text.primary", 
+                      fontSize: "1rem",
+                      overflow: 'hidden', 
+                      textOverflow: 'ellipsis', 
+                      display: '-webkit-box', 
+                      WebkitLineClamp: 4, 
+                      WebkitBoxOrient: 'vertical',
+                      flexGrow: 1 
+                    }}
                   >
-                    {blog.content.length > 100
-                      ? `${blog.content.substring(0, 100)}...`
+                    {blog.content.length > 200
+                      ? `${blog.content.substring(0, 200)}...`
                       : blog.content}
                   </Typography>
                 </CardContent>

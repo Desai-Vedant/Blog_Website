@@ -7,7 +7,6 @@ import jwt from "jsonwebtoken";
 import cookieParser from "cookie-parser";
 import { authenticateToken } from "./utils/authorization.js";
 import cors from "cors";
-
 const app = express();
 const port = 3000;
 
