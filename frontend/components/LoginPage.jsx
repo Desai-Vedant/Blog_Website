@@ -87,8 +87,8 @@ function LoginPage() {
       </Typography>
       <Box sx={{ width: "100%", bgcolor: "background.paper" }}>
         <Tabs value={value} onChange={handleChange} centered>
-          <Tab label="Customer" />
-          <Tab label="Admin" />
+          <Tab label="User" />
+          <Tab label="Creator" />
         </Tabs>
       </Box>
       <CustomTabPanel value={value} index={0}>

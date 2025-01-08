@@ -14,6 +14,7 @@ function BlogDetailsAdmin() {
   const { id } = useParams(); // Extract blog ID from URL
   const navigate = useNavigate(); // For navigation
   const [blog, setBlog] = useState(null);
+  const [creatorname, setCreatorname] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [editMode, setEditMode] = useState(false); // Track edit mode
@@ -25,10 +26,19 @@ function BlogDetailsAdmin() {
   useEffect(() => {
     const fetchBlog = async () => {
       try {
-        const response = await axios.get(`http://localhost:3000/blog/${id}`);
+        const response = await axios.get(`http://localhost:3000/blog/${id}`, {
+          withCredentials: true,
+        });
         setBlog(response.data);
         setTitle(response.data.title);
         setContent(response.data.content);
+        const userData = { userId: response.data.creatorid };
+        const response2 = await axios.post(
+          `http://localhost:3000/user/getname`,
+          userData,
+          { withCredentials: true }
+        );
+        setCreatorname(response2.data.creatorname);
       } catch (err) {
         setError("Failed to fetch blog details. Please try again later.");
       } finally {
@@ -112,7 +122,7 @@ function BlogDetailsAdmin() {
         )}
       </Typography>
       <Typography variant="body2" color="text.secondary" sx={{ mb: 2 }}>
-        Created by: {blog.creatorid}
+        Created by: {creatorname}
       </Typography>
       <Typography variant="body2" color="text.secondary" sx={{ mb: 4 }}>
         Published on: {new Date(blog.date).toLocaleDateString()}
